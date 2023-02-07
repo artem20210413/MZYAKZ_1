@@ -52,7 +52,6 @@ namespace MOYKZ_1
 
         private void buttonGray_Click(object sender, EventArgs e)
         {
-          //  Bitmap copyBitmap = new Bitmap(pictureBoxInput.Image.Width, pictureBoxInput.Image.Height);
             this._imgOutput = new Bitmap((Bitmap)this._imgInput);
             ProcessImage(this._imgOutput);
             pictureBoxOutput.SizeMode = PictureBoxSizeMode.Zoom;
@@ -304,42 +303,6 @@ namespace MOYKZ_1
 
         }
 
-        private void cumulativeHistogram_Click(object sender, EventArgs e)
-        {
-            this._imgOutput = new Bitmap((Bitmap)this._imgInput);
-
-            this._imgOutput = _cumulativeHistogram(this._imgOutput);
-            pictureBoxOutput.SizeMode = PictureBoxSizeMode.StretchImage;
-            pictureBoxOutput.Image = this._imgOutput;
-
-        }
-        private Bitmap _cumulativeHistogram(Bitmap bmp)
-        {
-
-            int[] arrBright = new int[256];
-            
-
-            for (int i = 0; i < bmp.Width; i++)
-            {
-                for (int j = 0; j < bmp.Height; j++)
-                {
-                    Color bmpColor = bmp.GetPixel(i, j);
-                    int red = bmpColor.R;
-                    int green = bmpColor.G;
-                    int blue = bmpColor.B;
-                    int gray = (byte)((red + green + blue) / 3);
-
-                    arrBright[gray]++;
-
-                }
-
-            }
-
-            arrBright = cumulativeSort(arrBright);
-
-            return showHistogram(arrBright);
-        }
-
         private Bitmap linearHistogram(Bitmap bmp)
         {
 
@@ -381,6 +344,7 @@ namespace MOYKZ_1
             }
             return A;
         }
+
         int[] cumulativeSort(int[] A)
         {
             for (int i = 1; i < A.Length; i++)
@@ -391,6 +355,41 @@ namespace MOYKZ_1
             return A;
         }
 
+        private void cumulativeHistogram_Click(object sender, EventArgs e)
+        {
+            this._imgOutput = new Bitmap((Bitmap)this._imgInput);
+
+            this._imgOutput = _cumulativeHistogram(this._imgOutput);
+            pictureBoxOutput.SizeMode = PictureBoxSizeMode.StretchImage;
+            pictureBoxOutput.Image = this._imgOutput;
+
+        }
+        private Bitmap _cumulativeHistogram(Bitmap bmp)
+        {
+
+            int[] arrBright = new int[256];
+
+
+            for (int i = 0; i < bmp.Width; i++)
+            {
+                for (int j = 0; j < bmp.Height; j++)
+                {
+                    Color bmpColor = bmp.GetPixel(i, j);
+                    int red = bmpColor.R;
+                    int green = bmpColor.G;
+                    int blue = bmpColor.B;
+                    int gray = (byte)((red + green + blue) / 3);
+
+                    arrBright[gray]++;
+
+                }
+
+            }
+
+            arrBright = cumulativeSort(arrBright);
+
+            return showHistogram(arrBright);
+        }
 
 
 
